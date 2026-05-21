@@ -40,7 +40,7 @@ Data is appended to `traffic_data.csv` with the following schema:
 | `motorcycles` | Cumulative motorcycle count |
 | `vehicles_per_min` | Vehicle throughput |
 | `traffic_level` | LOW / MEDIUM / HIGH |
-| `emission_index` | Weighted environmental impact score |
+| `emission_index` | environmental impact score per minute |
 
 ### Emission weights
 | Vehicle | Weight |
