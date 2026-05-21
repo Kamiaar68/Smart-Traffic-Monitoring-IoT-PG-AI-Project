@@ -153,10 +153,15 @@ while True:
     else:
         traffic_level = "HIGH"
 
-    # emission index calculation
-    emission_index = 0
+    # emission index calculation (per minute, not cumulative)
+    emission_total = 0
     for vehicle, count in class_counts.items():
-        emission_index += EMISSION_WEIGHTS.get(vehicle, 1) * count
+        emission_total += EMISSION_WEIGHTS.get(vehicle, 1) * count
+
+    if elapsed_minutes > 0:
+        emission_index = emission_total / elapsed_minutes
+    else:
+        emission_index = 0
 
     # event generation
     if vehicles_in_frame > 15:
@@ -166,7 +171,7 @@ while True:
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.6, (255, 255, 0), 2)
 
-    if emission_index > 1000:
+    if emission_index > 80:
         print("EVENT: High pollution level detected")
         cv2.putText(display_frame, "High Pollution Level Detected!",
                     (w-300, 80),
@@ -185,7 +190,7 @@ while True:
             class_counts.get("motorcycle", 0),
             round(vehicles_per_min, 2),
             traffic_level,
-            emission_index
+            round(emission_index, 2)
         ])
         last_log_time = current_time
 
